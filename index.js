@@ -5,7 +5,7 @@ const { createAudioPlayer, createAudioResource, joinVoiceChannel, generateDepend
 
 // maximum and minimum intervals (in seconds) between farts, respectively
 const MAX_INTERVAL = 600; // default: 600
-const MIN_INTERVAL = 30; // default: 30
+const MIN_INTERVAL = 10; // default: 10
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']
@@ -30,7 +30,12 @@ client.on('messageCreate', message => {
         const connection = getVoiceConnection(message.guild.id);
         if (connection) {
             const player = createAudioPlayer();
-            const resource = createAudioResource(join(__dirname, 'fart.mp3'))
+            let fartsound = '';
+            if (Math.floor(Math.random() * 100) < 5)
+                fartsound = 'longfart.mp3';
+            else
+                fartsound = 'fart.mp3';
+            const resource = createAudioResource(join(__dirname, fartsound));
             player.play(resource);
             connection.subscribe(player);
 
